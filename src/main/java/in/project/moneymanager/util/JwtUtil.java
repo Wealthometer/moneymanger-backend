@@ -2,64 +2,74 @@ package in.project.moneymanager.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
+import io.jsonwebtoken.io.Decoders;
 
 @Component
 public class JwtUtil {
 
-    // 24 hours token validity
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours
 
-    // You can store this in application.properties instead
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // We will still read the secret string from properties
+    @Value("${jwt.secret}")
+    private String secret;
 
-    // Generate token from username
+    // 1. Declare the final Key field
+    private final Key signingKey;
+
+    // 2. Add a constructor to initialize the key right after @Value is injected
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        // We use the parameter 'secret' here, which Spring injects
+        this.secret = secret;
+        this.signingKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    }
+
+    // 3. Simple getter for the key (no more decoding every time)
+    private Key getSigningKey() {
+        return signingKey;
+    }
+
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key)
+                .signWith(getSigningKey())
                 .compact();
     }
 
-    // Validate a JWT token
     public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+        return extractedUsername.equals(username) && !isTokenExpired(token);
     }
 
-    // Extract username
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract expiration
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Check if token is expired
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // General claim extractor
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // Parse JWT claims
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(getSigningKey()) // Uses the initialized key
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
