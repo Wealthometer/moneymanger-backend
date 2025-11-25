@@ -32,7 +32,7 @@ public class ProfileService {
 //        newProfile.setPassword(passwordEncoder.encode(newProfile.getPassword()));
         newProfile = profileRepository.save(newProfile);
         // Send activation email
-        String activationLink = "http://localhost:8181/ap1/v1.o/activate?token=" + newProfile.getActivationToken();
+        String activationLink = "http://localhost:8181/api/v1.0/activate?token=" + newProfile.getActivationToken();
         String subject = "Activate your Money Manager Account";
         String body = "Click the following link to activate your account: " + activationLink;
         emailService.sendEmail(newProfile.getEmail(), subject, body);
@@ -111,11 +111,11 @@ public class ProfileService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword()));
             String token = jwtUtil.generateToken(authDTO.getEmail());
             return Map.of(
-                    "token", "JWT token",
+                    "token", token,
                     "user", getPublicProfile(authDTO.getEmail())
             );
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid email or password");
         }
     }
 }
