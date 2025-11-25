@@ -13,12 +13,12 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     @Value("${spring.mail.properties.mail.smtp.from}")
-    private String fomEmail;
+    private String fromEmail;
 
     public void sendEmail(String to, String subject, String body) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fomEmail);
+            message.setFrom(fromEmail);
             message.setTo(to);
             message.setSubject(subject);
             message.setText(body);
