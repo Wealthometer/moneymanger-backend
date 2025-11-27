@@ -28,7 +28,8 @@ public class CategoryController {
         return ResponseEntity.ok(categories); // Placeholder
     }
 
-    public List<CategoryDTO> geCategoriesByTypeForCurrentUser() {
-
+    @GetMapping("/{type}")
+    public List<CategoryDTO> geCategoriesByTypeForCurrentUser(@PathVariable String type) {
+        return categoryService.getCategoriesByTypeForCurrentUser(type);
     }
 }
