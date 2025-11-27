@@ -42,5 +42,6 @@ public class ProfileEntity {
             isActive = false;
         }
     }
+
     
 }
