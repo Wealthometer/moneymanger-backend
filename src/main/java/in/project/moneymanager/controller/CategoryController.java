@@ -29,7 +29,8 @@ public class CategoryController {
     }
 
     @GetMapping("/{type}")
-    public List<CategoryDTO> geCategoriesByTypeForCurrentUser(@PathVariable String type) {
-        return categoryService.getCategoriesByTypeForCurrentUser(type);
+    public ResponseEntity<List<CategoryDTO>> geCategoriesByTypeForCurrentUser(@PathVariable String type) {
+        List<CategoryDTO> list = categoryService.getCategoriesByTypeForCurrentUser(type);
+        return ResponseEntity.ok(list);
     }
 }
