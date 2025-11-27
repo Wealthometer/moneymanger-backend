@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -118,4 +120,15 @@ public class ProfileService {
             throw new RuntimeException("Invalid email or password");
         }
     }
+
+    public Iterable<ProfileDTO> getAllProfiles() {
+        List<ProfileDTO> dtos = new ArrayList<>();
+
+        for (ProfileEntity entity : profileRepository.findAll()) {
+            dtos.add(toDTO(entity));
+        }
+
+        return dtos;
+    }
+
 }
