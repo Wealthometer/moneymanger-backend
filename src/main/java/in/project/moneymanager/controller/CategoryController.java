@@ -27,4 +27,8 @@ public class CategoryController {
         List<CategoryDTO> categories = categoryService.getCategoriesForCurrentUser(); // Placeholder for actual service call
         return ResponseEntity.ok(categories); // Placeholder
     }
+
+    public List<CategoryDTO> geCategoriesByTypeForCurrentUser() {
+
+    }
 }
