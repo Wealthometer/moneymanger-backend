@@ -58,4 +58,11 @@ public class ProfileController {
     public String test(){
         return "Test successful";
     }
+
+    //feching all profiles
+    @GetMapping("/profiles")
+    public ResponseEntity<Iterable<ProfileDTO>> getAllProfiles() {
+        Iterable<ProfileDTO> profiles = profileService.getAllProfiles();
+        return ResponseEntity.ok(profiles);
+    }
 }
