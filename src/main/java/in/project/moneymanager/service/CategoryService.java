@@ -7,12 +7,14 @@ import in.project.moneymanager.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryService {
 
     private final ProfileService profileService;
@@ -50,9 +52,8 @@ public class CategoryService {
 
         existingCategory.setName(dto.getName());
         existingCategory.setIcon(dto.getIcon());
-//        existingCategory.setType(dto.getType());
-
         existingCategory = categoryRepository.save(existingCategory);
+
         return toDTO(existingCategory);
     }
 
