@@ -15,7 +15,7 @@ import io.jsonwebtoken.io.Decoders;
 @Component
 public class JwtUtil {
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours
+    private static final long EXPIRATION_TIME = 1000L * 60 * 60 * 24 * 30; // 30 days
 
     // We will still read the secret string from properties
     @Value("${jwt.secret}")
