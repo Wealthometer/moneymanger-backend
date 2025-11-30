@@ -1,6 +1,5 @@
 package in.project.moneymanager.repository;
 
-import in.project.moneymanager.entity.ExpenseEntity;
 import in.project.moneymanager.entity.IncomeEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
