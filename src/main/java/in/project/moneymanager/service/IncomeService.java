@@ -1,12 +1,9 @@
 package in.project.moneymanager.service;
 
-import in.project.moneymanager.dto.ExpenseDTO;
 import in.project.moneymanager.dto.IncomeDTO;
 import in.project.moneymanager.entity.CategoryEntity;
-import in.project.moneymanager.entity.ExpenseEntity;
 import in.project.moneymanager.entity.IncomeEntity;
 import in.project.moneymanager.entity.ProfileEntity;
-import in.project.moneymanager.repository.ExpenseRepository;
 import in.project.moneymanager.repository.IncomeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
